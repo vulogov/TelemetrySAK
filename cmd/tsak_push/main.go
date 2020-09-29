@@ -2,8 +2,9 @@ package main
 
 import (
   "fmt"
+  "github.com/vulogov/TelemetrySAK/internal/server"
 )
 
 func main() {
-  fmt.Println("Hello, world.")
+  main.server_main()
 }
