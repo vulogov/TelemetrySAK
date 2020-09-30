@@ -1,0 +1,6 @@
+log = import("tlog")
+
+log.Trace("This is trace")
+log.Info("This is INFO")
+log.Warning("This is WARNING")
+log.Error("This is ERROR")
