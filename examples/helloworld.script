@@ -1,4 +1,7 @@
 fmt = import("fmt")
+tsak = import("tsak")
+
 
 fmt.Println("Hello world")
 fmt.Println("The answer is ", answer)
+fmt.Println("The answer from a package is ", tsak.Answer)

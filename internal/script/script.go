@@ -6,6 +6,7 @@ import (
   "github.com/vulogov/TelemetrySAK/internal/log"
   "github.com/mattn/anko/env"
   _ "github.com/mattn/anko/packages"
+  _ "github.com/vulogov/TelemetrySAK/packages"
 	"github.com/mattn/anko/vm"
 )
 
