@@ -21,7 +21,9 @@ func Define(key string, value string) {
 
 func InitScript() {
   log.Trace("Initialize internal script engine")
-  Define("answer", "42")
+  for k := range env.Packages {
+    log.Trace(fmt.Sprintf("Module: %[1]s", k))
+  }
 }
 
 func RunScript(fname string) string {

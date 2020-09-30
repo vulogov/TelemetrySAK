@@ -1,0 +1,8 @@
+fmt = import("fmt")
+djson = import("djson")
+tsak = import("tsak")
+
+
+j = djson.New()
+j.Set(tsak.Answer, "answer")
+fmt.Println(j.String())

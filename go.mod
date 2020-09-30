@@ -3,6 +3,7 @@ module github.com/vulogov/TelemetrySAK
 go 1.15
 
 require (
+	github.com/Jeffail/gabs v1.4.0
 	github.com/goreleaser/goreleaser v0.143.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/anko v0.1.8
