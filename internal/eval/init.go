@@ -17,6 +17,7 @@ func Init() {
   flag.StringVar(&conf.Command, "cmd", "./test.lisp", "Path to the telemetry generator code")
   flag.StringVar(&conf.Src, "src", "localhost", "Origin of metric")
   flag.StringVar(&conf.Key, "key", "testkey", "Metric name")
+  flag.BoolVar(&conf.Loop, "loop", false, "Invole commend in the loop")
   flag.StringVar(&conf.Pub, "pub", "tcp://127.0.0.1:61002", "PUB service")
   flag.Parse()
   signal.InitSignal()
@@ -24,4 +25,5 @@ func Init() {
   log.Info(fmt.Sprintf("Loading telemetry generator from %[1]s", conf.Command))
   log.Info(fmt.Sprintf("Generating for %[1]s.%[2]s", conf.Src, conf.Key))
   log.Info(fmt.Sprintf("Publishing to  %[1]s", conf.Pub))
+  log.Info(fmt.Sprintf("Running comand in loop  %[1]v", conf.Loop))
 }
