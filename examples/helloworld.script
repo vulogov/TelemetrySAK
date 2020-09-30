@@ -1,0 +1,4 @@
+fmt = import("fmt")
+
+fmt.Println("Hello world")
+fmt.Println("The answer is ", answer)

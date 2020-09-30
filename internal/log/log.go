@@ -24,3 +24,11 @@ func Trace(msg string) {
 func Info(msg string) {
   log.Info(msg)
 }
+
+func Warning(msg string) {
+  log.Warning(msg)
+}
+
+func Error(msg string) {
+  log.Error(msg)
+}
