@@ -1,0 +1,12 @@
+tsak = import("tsak")
+fmt = import("fmt")
+log = import("tlog")
+time = import("time")
+
+c = 0
+for ! tsak.ExitRequested() {
+  tsak.SetProcTitle(fmt.Sprintf("test application: %d", c))
+  c = c + 1
+  time.Sleep(time.Second * 2)
+  log.Trace("Here we go")
+}
