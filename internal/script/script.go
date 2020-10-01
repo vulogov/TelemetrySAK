@@ -4,6 +4,7 @@ import (
   "fmt"
   "io/ioutil"
   "github.com/vulogov/TelemetrySAK/internal/log"
+  "github.com/vulogov/TelemetrySAK/internal/conf"
   "github.com/mattn/anko/env"
   _ "github.com/mattn/anko/packages"
   _ "github.com/vulogov/TelemetrySAK/packages"
@@ -21,6 +22,11 @@ func Define(key string, value string) {
 
 func InitScript() {
   log.Trace("Initialize internal script engine")
+  if conf.Conf != "" {
+    log.Trace(fmt.Sprintf("Attempting to load configuration file %[1]s", conf.Conf))
+    res := RunScript(conf.Conf)
+    log.Trace(fmt.Sprintf("Outcome of configuration bootstrap %[1]v", res))
+  }
   for k := range env.Packages {
     log.Trace(fmt.Sprintf("Module: %[1]s", k))
   }

@@ -19,6 +19,7 @@ func Init() {
   flag.StringVar(&conf.Key, "key", "testkey", "Metric name")
   flag.BoolVar(&conf.Loop, "loop", false, "Invole commend in the loop")
   flag.StringVar(&conf.Pub, "pub", "tcp://127.0.0.1:61002", "PUB service")
+  flag.StringVar(&conf.Conf, "cfg", "", "Name of the configuration file")
   flag.Parse()
   signal.InitSignal()
   script.InitScript()
