@@ -22,6 +22,7 @@ func Init() {
   flag.StringVar(&conf.Conf, "cfg", "", "Name of the configuration file")
   flag.BoolVar(&conf.Debug, "debug", false, "Enable debug output")
   flag.BoolVar(&conf.Compress, "compress", false, "Enable compression")
+  flag.IntVar(&conf.Batch, "batch", 1024, "Size of the batch for sending")
 
   flag.Parse()
   signal.InitSignal()

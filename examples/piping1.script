@@ -1,0 +1,33 @@
+tsak = import("tsak")
+fmt = import("fmt")
+log = import("tlog")
+time = import("time")
+djson = import("djson")
+bufio = import("bufio")
+os = import("os")
+strings = import("strings")
+
+s = bufio.New(os.Stdin)
+c = 0
+for ! tsak.ExitRequested() {
+  buf = ""
+  c = c + 1
+  if s.Scan() {
+    buf = strings.TrimSpace(s.Text())
+  }
+  if buf == "" {
+    break
+  }
+  err = s.Err()
+  if err != nil {
+    break
+  }
+  data = djson.New()
+  data.Set(tsak.NowMilliseconds(), "timestamp")
+  data.Set(buf, "value")
+  fmt.Println("Pre-formatted", data.String())
+  tsak.To(data.Bytes())
+  log.Trace("Data sent")
+}
+log.Trace("We are done here")
+tsak.Release(2)

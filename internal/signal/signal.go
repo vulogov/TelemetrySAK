@@ -55,6 +55,13 @@ func Reserve(n int) {
   wg.Add(n)
 }
 
+func Release(n int) {
+  ng = ng - n
+  for i := 0; i < n; i++ {
+    wg.Done()
+  }
+}
+
 func Loop() {
   wg.Wait()
 }

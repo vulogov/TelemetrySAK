@@ -6,6 +6,7 @@ import (
   "github.com/mattn/anko/env"
   "github.com/erikdubbelboer/gspt"
   "github.com/vulogov/TelemetrySAK/internal/signal"
+  "github.com/vulogov/TelemetrySAK/internal/piping"
 )
 
 func NowMilliseconds() int64 {
@@ -18,6 +19,10 @@ func init() {
     "SetProcTitle":   reflect.ValueOf(gspt.SetProcTitle),
     "ExitRequest":    reflect.ValueOf(signal.ExitRequest),
     "ExitRequested":  reflect.ValueOf(signal.ExitRequested),
-    "NowMilliseconds":  reflect.ValueOf(NowMilliseconds),
+    "Release":        reflect.ValueOf(signal.Release),
+    "NowMilliseconds":reflect.ValueOf(NowMilliseconds),
+    "From":           reflect.ValueOf(piping.From),
+    "To":             reflect.ValueOf(piping.To),
+    "Len":            reflect.ValueOf(piping.Len),
   }
 }
