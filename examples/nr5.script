@@ -1,0 +1,27 @@
+fmt = import("fmt")
+djson = import("djson")
+tsak = import("tsak")
+time = import("time")
+nr = import("nr")
+
+jroot = djson.New()
+jroot.Array()
+
+jload = djson.New()
+
+jlogs = djson.New()
+jlogs.Array()
+
+jl1 = djson.New()
+jl1.Set(tsak.NowMilliseconds(), "timestamp")
+jl1.Set("This is an example of log messages", "message")
+jl1.Set("testlog", "logtype")
+jl1.Set("test-service", "service")
+jl1.Set("www.example.com", "hostname")
+
+jlogs.ArrayAppend(jl1.Data())
+jload.Set(jlogs.Data(), "logs")
+jroot.ArrayAppend(jload.Data())
+
+fmt.Println(fmt.Sprintf("Generated payload: %s", jroot.String()))
+nr.Logs(NRIAPI, LOGS_ENDPOINT, COMPRESS, jroot.Bytes())
