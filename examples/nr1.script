@@ -1,0 +1,3 @@
+nr = import("nr")
+
+nr.Metric(NRAPI, "TSAK", "testmetric", 42)

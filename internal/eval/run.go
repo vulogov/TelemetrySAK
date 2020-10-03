@@ -19,8 +19,8 @@ func Run() {
     defer wg.Done()
     if conf.Loop {
       for ! signal.ExitRequested(){
-        time.Sleep(3 * time.Second)
-        log.Trace("PROTOCOL loop")
+        time.Sleep(1 * time.Second)
+        // log.Trace("PROTOCOL loop")
         res = script.RunScript(conf.Command)
         log.Trace(fmt.Sprintf("RET: %[1]s", res))
       }
@@ -34,8 +34,8 @@ func Run() {
     log.Trace("Starting PUB side")
     defer wg.Done()
     for ! signal.ExitRequested() {
-      time.Sleep(3 * time.Second)
-      log.Trace("PUB loop")
+      time.Sleep(1 * time.Second)
+      // log.Trace("PUB loop")
     }
     log.Trace("PUB exit")
   }(signal.WG())

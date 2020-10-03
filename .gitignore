@@ -6,6 +6,8 @@
 *.dylib
 bin/linux/*
 bin/darwin/*
+config.private/*
+
 
 
 # Test binary, built with `go test -c`

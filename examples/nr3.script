@@ -1,0 +1,19 @@
+fmt = import("fmt")
+djson = import("djson")
+tsak = import("tsak")
+time = import("time")
+nr = import("nr")
+
+
+URL=fmt.Sprintf(EVENT_ENDPOINT, ACCOUNT)
+fmt.Println(URL)
+
+j = djson.New()
+j.Set(tsak.NowMilliseconds(), "timestamp")
+j.Set("testEvent", "eventType")
+j.Set(42, "TheAnswer")
+j.Set(ID, "Nr.Custom Event Source")
+
+
+fmt.Println(fmt.Sprintf("Generated payload: %s", j.String()))
+nr.Events(NRIAPI, URL, j.Bytes())

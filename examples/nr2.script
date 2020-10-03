@@ -1,0 +1,25 @@
+fmt = import("fmt")
+djson = import("djson")
+tsak = import("tsak")
+time = import("time")
+nr = import("nr")
+
+
+j = djson.New()
+j.Array("metrics")
+j2 = djson.New()
+
+j2.Set(42, "value")
+j2.Set("gauge", "type")
+j2.Set("answer.life.universe.everything", "name")
+j2.Set(tsak.NowMilliseconds(), "timestamp")
+j2.Set("www.example.com", "attributes", "host.name")
+j.ArrayAppend(j2.Data(), "metrics")
+
+jroot = djson.New()
+jroot.Array()
+jroot.ArrayAppend(j.Data())
+
+fmt.Println(fmt.Sprintf("Generated payload %s", jroot.Bytes()))
+
+nr.Metrics(NRIAPI, METRIC_ENDPOINT, COMPRESS, jroot.Bytes())

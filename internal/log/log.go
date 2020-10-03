@@ -3,6 +3,7 @@ package log
 import (
   "os"
   "github.com/sirupsen/logrus"
+  "github.com/vulogov/TelemetrySAK/internal/conf"
 )
 
 var log = logrus.New()
@@ -18,7 +19,9 @@ func InitLog() {
 }
 
 func Trace(msg string) {
-  log.Trace(msg)
+  if conf.Debug {
+    log.Trace(msg)
+  }
 }
 
 func Info(msg string) {

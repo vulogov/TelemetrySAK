@@ -20,6 +20,9 @@ func Init() {
   flag.BoolVar(&conf.Loop, "loop", false, "Invole commend in the loop")
   flag.StringVar(&conf.Pub, "pub", "tcp://127.0.0.1:61002", "PUB service")
   flag.StringVar(&conf.Conf, "cfg", "", "Name of the configuration file")
+  flag.BoolVar(&conf.Debug, "debug", false, "Enable debug output")
+  flag.BoolVar(&conf.Compress, "compress", false, "Enable compression")
+
   flag.Parse()
   signal.InitSignal()
   script.InitScript()
