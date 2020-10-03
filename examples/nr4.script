@@ -1,0 +1,33 @@
+fmt = import("fmt")
+djson = import("djson")
+tsak = import("tsak")
+time = import("time")
+nr = import("nr")
+
+jroot = djson.New()
+jroot.Array()
+
+jtrace = djson.New()
+jcommon = djson.New()
+jcommon.Set("www.example.com", "attributes", "host")
+jcommon.Set("Tsak Service", "attributes", "service.name")
+jtrace.Set(jcommon.Data(), "common")
+
+jspans = djson.New()
+jspans.Array()
+
+j1 = djson.New()
+j1.Set("777777777", "trace.id")
+j1.Set("ABC", "id")
+j1.Set(0.42, "attributes", "duration.ms")
+j1.Set("SomeName", "attributes", "name")
+j1.Set("Tsak Service", "attributes", "service.name")
+
+
+jspans.ArrayAppend(j1.Data())
+jtrace.Set(jspans.Data(), "spans")
+
+jroot.ArrayAppend(jtrace.Data())
+
+fmt.Println(fmt.Sprintf("Generated payload: %s", jroot.String()))
+nr.Traces(NRIAPI, TRACES_ENDPOINT, COMPRESS, jroot.Bytes())
