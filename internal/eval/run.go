@@ -41,6 +41,9 @@ func Run() {
         for piping.Len() > 0 {
           data = piping.From()
           log.Trace(string(data))
+          script.DefinePost("DATA", string(data))
+          res = script.RunPost(conf.Postprocess)
+          log.Trace(fmt.Sprintf("Result of post-processing: %V", res))
         }
       }
       // log.Trace(fmt.Sprintf("Nothing in the channel %d", piping.Len()))

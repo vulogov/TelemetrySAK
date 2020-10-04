@@ -14,7 +14,7 @@ func To(_data []byte) {
   var data = bytes.NewBuffer(_data)
   log.Trace(fmt.Sprintf("Sending %d bytes to zmq pipeline", data.Len()))
   zmqPipe <- data.String()
-  log.Trace(fmt.Sprintf("%d bytes in pipeline", len(zmqPipe)))
+  log.Trace(fmt.Sprintf("%d element in pipeline", len(zmqPipe)))
 }
 
 func From() []byte {

@@ -14,7 +14,8 @@ import (
 func Init() {
   log.InitLog()
   log.Trace("Eval initialization")
-  flag.StringVar(&conf.Command, "cmd", "./test.lisp", "Path to the telemetry generator code")
+  flag.StringVar(&conf.Command, "cmd", "", "Path to the telemetry generator code")
+  flag.StringVar(&conf.Postprocess, "post", "", "Path to the postprocessing script")
   flag.StringVar(&conf.Src, "src", "localhost", "Origin of metric")
   flag.StringVar(&conf.Key, "key", "testkey", "Metric name")
   flag.BoolVar(&conf.Loop, "loop", false, "Invole commend in the loop")
