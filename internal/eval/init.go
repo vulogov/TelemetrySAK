@@ -7,6 +7,7 @@ import (
   "github.com/vulogov/TelemetrySAK/internal/log"
   "github.com/vulogov/TelemetrySAK/internal/conf"
   "github.com/vulogov/TelemetrySAK/internal/signal"
+  "github.com/vulogov/TelemetrySAK/internal/piping"
 )
 
 
@@ -27,6 +28,7 @@ func Init() {
 
   flag.Parse()
   signal.InitSignal()
+  piping.InitZmq()
   script.InitScript()
   log.Info(fmt.Sprintf("Loading telemetry generator from %[1]s", conf.Command))
   log.Info(fmt.Sprintf("Generating for %[1]s.%[2]s", conf.Src, conf.Key))

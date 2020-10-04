@@ -5,10 +5,36 @@ import (
   "fmt"
   "bytes"
   "github.com/vulogov/TelemetrySAK/internal/log"
-  // "github.com/vulogov/TelemetrySAK/internal/conf"
+  "github.com/vulogov/TelemetrySAK/internal/conf"
+  zmq "github.com/pebbe/zmq4"
 )
 
 var zmqPipe = make(chan string, 1000000)
+var zmqCtx,_ = zmq.NewContext()
+var zmqPUB *zmq.Socket
+
+func InitZmq() {
+  var err error
+  log.Trace(fmt.Sprintf("Creating new PUB socket on %s", conf.Pub))
+  zmqPUB, err = zmqCtx.NewSocket(zmq.PUB)
+  if err != nil {
+    log.Error(fmt.Sprintf("Failure to create socket %V", err))
+    return
+  }
+  zmqPUB.Bind(conf.Pub)
+}
+
+func FinZmq() {
+  log.Info("Terminating ZMQ")
+  zmqPUB.Close()
+  zmqCtx.Term()
+  log.Trace("ZMQ is terminated")
+}
+
+func ToZmq(data string) {
+  log.Trace(fmt.Sprintf("Publishing %d bytes to PUB interface", len(data)))
+  zmqPUB.Send(data, 0)
+}
 
 func To(_data []byte) {
   var data = bytes.NewBuffer(_data)

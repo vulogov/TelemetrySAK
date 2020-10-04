@@ -43,7 +43,8 @@ func Run() {
           log.Trace(string(data))
           script.DefinePost("DATA", string(data))
           res = script.RunPost(conf.Postprocess)
-          log.Trace(fmt.Sprintf("Result of post-processing: %V", res))
+          log.Trace(fmt.Sprintf("Result of post-processing: %s", string(res)))
+          piping.ToZmq(res)
         }
       }
       // log.Trace(fmt.Sprintf("Nothing in the channel %d", piping.Len()))

@@ -1,4 +1,4 @@
 fmt = import("fmt")
 
 fmt.Println("Here is postprocess:", DATA)
-RES=true
+DATA
