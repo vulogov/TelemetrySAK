@@ -2,6 +2,7 @@ package signal
 
 import (
   "os"
+  "fmt"
   "os/signal"
   "syscall"
   "sync"
@@ -9,7 +10,7 @@ import (
 )
 
 var wg sync.WaitGroup
-var exitChan chan bool
+var exitChan = make(chan bool, 128)
 var ng = 0
 
 func signalHandler() {
@@ -17,7 +18,7 @@ func signalHandler() {
   c := make(chan os.Signal, 1)
   signal.Notify(c, os.Interrupt, os.Kill, syscall.SIGTERM)
   <- c
-  log.Info("Interruption signal detected")
+  log.Info(fmt.Sprintf("Interruption signal detected. N=%d", ng))
   for i := 0; i < ng; i++ {
     exitChan <- true
   }
@@ -28,11 +29,16 @@ func ExitRequest() {
 }
 
 func ExitRequested() bool {
+  if len(exitChan) > 0 {
+    log.Trace(fmt.Sprintf("Exit requested: %[1]d",len(exitChan)))
+  }
   select {
   case _, ok := <- exitChan:
     if ok {
+      ExitRequest()
       return true
     } else {
+      ExitRequest()
       return true
     }
   default:
@@ -44,9 +50,12 @@ func WG() *sync.WaitGroup {
   return &wg
 }
 
+func Len() int {
+  return len(exitChan)
+}
+
 func InitSignal() {
   log.Trace("Configuring signals")
-  exitChan = make(chan bool)
   go signalHandler()
 }
 

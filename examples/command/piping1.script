@@ -12,6 +12,10 @@ c = 0
 for ! tsak.ExitRequested() {
   buf = ""
   c = c + 1
+  // fmt.Println(fmt.Sprintf("C=%d", c))
+  if ! bufio.CanRead(os.Stdin, 1) {
+    continue
+  }
   if s.Scan() {
     buf = strings.TrimSpace(s.Text())
   }
@@ -30,4 +34,3 @@ for ! tsak.ExitRequested() {
   log.Trace("Data sent")
 }
 log.Trace("We are done here")
-tsak.Release(2)

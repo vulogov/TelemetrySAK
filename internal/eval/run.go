@@ -19,7 +19,7 @@ func Run() {
     log.Trace("Starting protocol side")
     defer wg.Done()
     if conf.Loop {
-      for ! signal.ExitRequested(){
+      for signal.Len() == 0 {
         time.Sleep(1 * time.Second)
         // log.Trace("PROTOCOL loop")
         res = script.RunScript(conf.Command)
@@ -35,7 +35,7 @@ func Run() {
     var data []byte
     log.Trace("Starting PUB side")
     defer wg.Done()
-    for ! signal.ExitRequested() {
+    for signal.Len() == 0 {
       if piping.Len() > 0 {
         log.Trace(fmt.Sprintf("%d elements in input channel", piping.Len()))
         for piping.Len() > 0 {
@@ -50,7 +50,9 @@ func Run() {
       // log.Trace(fmt.Sprintf("Nothing in the channel %d", piping.Len()))
       time.Sleep(1 * time.Second)
     }
-    log.Trace("PUB exit")
+    signal.ExitRequest()
+    log.Trace(fmt.Sprintf("PUB exit. N=%d", signal.Len()))
   }(signal.WG())
   signal.Loop()
+  log.Trace("LOOP exit")
 }
