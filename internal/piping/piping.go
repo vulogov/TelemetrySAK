@@ -12,6 +12,7 @@ import (
 var zmqPipe = make(chan string, 1000000)
 var zmqCtx,_ = zmq.NewContext()
 var zmqPUB *zmq.Socket
+var zmqSUB *zmq.Socket
 
 func InitZmq() {
   var err error
@@ -24,9 +25,26 @@ func InitZmq() {
   zmqPUB.Bind(conf.Pub)
 }
 
+func InitZmqSUB() {
+  log.Trace(fmt.Sprintf("Creating new SUB socket on %s", conf.Sub))
+  zmqPUB, err = zmqCtx.NewSocket(zmq.SUB)
+  if err != nil {
+    log.Error(fmt.Sprintf("Failure to create socket %V", err))
+    return
+  }
+  zmqSUB.Connect(conf.Sub)
+}
+
 func FinZmq() {
   log.Info("Terminating ZMQ")
   zmqPUB.Close()
+  zmqCtx.Term()
+  log.Trace("ZMQ is terminated")
+}
+
+func FinZmqSUB() {
+  log.Info("Terminating ZMQ SUB")
+  zmqSUB.Close()
   zmqCtx.Term()
   log.Trace("ZMQ is terminated")
 }

@@ -1,9 +1,12 @@
 package reader
 
 import (
-  "fmt"
+  "github.com/vulogov/TelemetrySAK/internal/log"
 )
 
 func Reader() {
-  fmt.Println("Hello reader")
+  Init()
+  log.Trace("Entering MAIN")
+  Run()
+  Fin()
 }
