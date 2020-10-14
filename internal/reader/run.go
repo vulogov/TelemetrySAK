@@ -7,6 +7,8 @@ import (
   "github.com/vulogov/TelemetrySAK/internal/log"
   "github.com/vulogov/TelemetrySAK/internal/signal"
   "github.com/vulogov/TelemetrySAK/internal/piping"
+  "github.com/vulogov/TelemetrySAK/internal/script"
+  "github.com/vulogov/TelemetrySAK/internal/conf"
 )
 
 func Run() {
@@ -32,21 +34,41 @@ func Run() {
   }(signal.WG())
   go func(wg *sync.WaitGroup) {
     var data []byte
-    log.Trace("Starting preprocessing")
+    log.Trace("Starting postprocessing")
     defer wg.Done()
     for signal.Len() == 0 {
-      if piping.PreLen() > 0  {
+      for piping.PreLen() > 0  {
         data = piping.FromPre()
-        fmt.Println(string(data))
+        log.Trace(fmt.Sprintf("%d bytes received for POST", len(data)))
+        script.DefinePost("DATA", string(data))
+        res := script.RunPost(conf.Postprocess)
+        log.Trace(fmt.Sprintf("Result of post-processing: %s", string(res)))
+        piping.To([]byte(res))
       }
+      log.Trace(fmt.Sprintf("Cooling down in POST loop"))
+      time.Sleep(5000 * time.Millisecond)
     }
     log.Trace("Preprocessing exit")
   }(signal.WG())
   go func(wg *sync.WaitGroup) {
+    var data []byte
+    var res string
     log.Trace("Starting feeder side")
     defer wg.Done()
     for signal.Len() == 0 {
-
+      if conf.Loop {
+        for piping.Len() > 0 {
+          data = piping.From()
+          script.Define("DATA", string(data))
+          res = script.RunScript(conf.Command)
+          log.Trace(fmt.Sprintf("Result of command: %s", string(res)))
+        }
+        log.Trace(fmt.Sprintf("Cooling down in FEEDER loop"))
+        time.Sleep(5000 * time.Millisecond)
+      } else {
+        res = script.RunScript(conf.Command)
+        signal.ExitRequest()
+      }
     }
     log.Trace("Feeder exit")
   }(signal.WG())

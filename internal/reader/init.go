@@ -8,13 +8,14 @@ import (
   "github.com/vulogov/TelemetrySAK/internal/conf"
   "github.com/vulogov/TelemetrySAK/internal/signal"
   "github.com/vulogov/TelemetrySAK/internal/piping"
+  "github.com/vulogov/TelemetrySAK/internal/script"
 )
 
 func Init() {
   log.InitLog()
   log.Trace("Reader initialization")
   flag.StringVar(&conf.Command, "cmd", "", "Path to the telemetry submitter code")
-  flag.StringVar(&conf.Preprocess, "pre", "", "Path to the preprocessing script")
+  flag.StringVar(&conf.Postprocess, "post", "", "Path to the post-receiving processing script")
   flag.StringVar(&conf.Sub, "sub", "tcp://127.0.0.1:61002", "PUB service")
   flag.StringVar(&conf.Conf, "cfg", "", "Name of the configuration file")
   flag.BoolVar(&conf.Debug, "debug", false, "Enable debug output")
@@ -23,4 +24,5 @@ func Init() {
   flag.Parse()
   signal.InitSignal()
   piping.InitZmqSUB()
+  script.InitScript()
 }

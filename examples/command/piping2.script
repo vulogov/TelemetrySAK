@@ -1,0 +1,17 @@
+tsak = import("tsak")
+fmt = import("fmt")
+log = import("tlog")
+time = import("time")
+djson = import("djson")
+bufio = import("bufio")
+os = import("os")
+strings = import("strings")
+
+
+for ! tsak.ExitRequested() {
+  for tsak.Len() > 0 {
+    data = tsak.From()
+    fmt.Println(fmt.Sprintf("Here is to feeder %s",data))
+  }
+}
+log.Trace("We are done here")
