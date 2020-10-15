@@ -40,10 +40,15 @@ func Run() {
       for piping.PreLen() > 0  {
         data = piping.FromPre()
         log.Trace(fmt.Sprintf("%d bytes received for POST", len(data)))
-        script.DefinePost("DATA", string(data))
-        res := script.RunPost(conf.Postprocess)
-        log.Trace(fmt.Sprintf("Result of post-processing: %s", string(res)))
-        piping.To([]byte(res))
+        if len(conf.Postprocess) > 0 {
+          script.DefinePost("DATA", string(data))
+          res := script.RunPost(conf.Postprocess)
+          log.Trace(fmt.Sprintf("Result of post-processing: %s", string(res)))
+          piping.To([]byte(res))
+        } else {
+          log.Trace(fmt.Sprintf("%d bytes passthrough in POST", len(data)))
+          piping.To(data)
+        }
       }
       log.Trace(fmt.Sprintf("Cooling down in POST loop"))
       time.Sleep(5000 * time.Millisecond)
@@ -56,17 +61,22 @@ func Run() {
     log.Trace("Starting feeder side")
     defer wg.Done()
     for signal.Len() == 0 {
-      if conf.Loop {
-        for piping.Len() > 0 {
-          data = piping.From()
-          script.Define("DATA", string(data))
+      if len(conf.Command) > 0 {
+        if conf.Loop {
+          for piping.Len() > 0 {
+            data = piping.From()
+            script.Define("DATA", string(data))
+            res = script.RunScript(conf.Command)
+            log.Trace(fmt.Sprintf("Result of command: %s", string(res)))
+          }
+          log.Trace(fmt.Sprintf("Cooling down in FEEDER loop"))
+          time.Sleep(5000 * time.Millisecond)
+        } else {
           res = script.RunScript(conf.Command)
-          log.Trace(fmt.Sprintf("Result of command: %s", string(res)))
+          signal.ExitRequest()
         }
-        log.Trace(fmt.Sprintf("Cooling down in FEEDER loop"))
-        time.Sleep(5000 * time.Millisecond)
       } else {
-        res = script.RunScript(conf.Command)
+        log.Trace("No feeder script specified")
         signal.ExitRequest()
       }
     }
