@@ -4,9 +4,11 @@ go 1.15
 
 require (
 	github.com/Jeffail/gabs v1.4.0
+	github.com/deejross/go-snmplib v0.0.0-20190126151901-0ff3fc321a43
 	github.com/elastic/go-sysinfo v1.4.0
 	github.com/erikdubbelboer/gspt v0.0.0-20190125194910-e68493906b83
 	github.com/goreleaser/goreleaser v0.145.0 // indirect
+	github.com/hallidave/mibtool v0.2.0
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/anko v0.1.8
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
